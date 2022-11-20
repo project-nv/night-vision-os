@@ -1,0 +1,16 @@
+// Navy ~ 0.1-lite
+
+[OVERLAY name=NewOverlay, verion=0.1.0]
+
+// Overlay props
+prop('color', { type: 'Color', def: '#2d7b2f33' })
+
+// Draw call
+draw(ctx) {
+    const layout = $core.layout 
+    ctx.fillStyle = $props.color
+    ctx.fillRect(0, 0, layout.width, layout.height)
+}
+
+// Legend, defined as pairs [value, color]
+legend(x) => [[Math.random(), $props.color]]

@@ -1,0 +1,29 @@
+'new-data-set'; // Change this name, press 'Create' when you are ready 
+// indexBased;  // Uncomment if you need index-based mode
+$Candles {
+    name=Ape Tether US Binance | data=@(APEUSDT, 1h, 420)
+}
++ Spline {name=EMA, 10 | data=ema(close, 10)}
++ Spline {name=EMA, 20 | data=ema(close, 20)};
+Spline {
+    name=RSI, 14 |
+    data=rsi(close, 14) |
+    settings={ precision: 2 }
+};
+#pane0 { scales: { A: { precision: 2 } } }; 
+
+/*
+- `indexBased` sets the index-based mode
+- `$` means that `Candles` is the main overlay.
+- `@` loads data from Binance
+- `rsi()`, `ema()` calculate TA with [ta.js](https://github.com/Bitvested/ta.js) lib
+- `#` is for the pane settings
+
+Lines should be separated with `;`. Each line is either:
+
+- Overlay1 + Overlay2 + ... + OverlayN
+- indexBased flag
+- pane settings descriptor
+
+Overlay props are separated with `|`: 
+*/
