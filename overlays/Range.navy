@@ -1,5 +1,7 @@
 // Navy ~ 0.1-lite
 
+// Ranging indicator, e.g. RSI: [<timestamp>, <value>]
+
 [OVERLAY name=Range, ctx=Canvas, author=ChartMaster, verion=1.0.0]
 
 // Overlay props

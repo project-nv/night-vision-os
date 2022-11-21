@@ -1,7 +1,7 @@
 
 // NavyJS ~ 0.1-lite
 
-// Multiple splines, format: [<timestamp>, <num1>, <num2>, ...]
+// Multiple splines, format: [<timestamp>, <line1>, <line2>, ...]
 
 [OVERLAY name=Splines, ctx=Canvas, author=ChartMaster, version=1.0.0]
 

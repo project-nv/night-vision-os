@@ -77,8 +77,9 @@
         })
 
         editor.addCommand(monaco.KeyCode.Escape, () => {
-            editor.setValue(code.src)
-            changed = false
+            // TODO: ask confirm
+            /*editor.setValue(code.src)
+            changed = false*/
         })
         
         resizeTracker(editor)

@@ -1,6 +1,8 @@
 // Navy ~ 0.1-lite
 
-[OVERLAY name=Channel, ctx=Canvas, author=ChartMaster, verion=1.0.0]
+// Bands indicator, e.g. BB: [<timestamp>, <high>, <mid>, <low>]
+
+[OVERLAY name=Band, ctx=Canvas, author=ChartMaster, verion=1.0.0]
 
 // Overlay props
 prop('color', { type: 'Color', def: '#b41d70' })

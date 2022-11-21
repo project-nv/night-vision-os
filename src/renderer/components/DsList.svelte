@@ -104,6 +104,7 @@ async function loadDataset(name, code) {
     delete theNew.type 
     items = items
 
+    data.meta = { dataGenCode: code }    
     db.save(name, data)
     listRef.setSelected(theNew)
     /*dispatch('set-code', {
@@ -115,6 +116,9 @@ async function loadDataset(name, code) {
 function saveChanges(item, src) {
     try {
         let data = JSON.parse(src) 
+        data.meta = {
+            dataGen: src
+        }
         db.save(item.name, data)
         self.chart.data = data 
         self.chart.fullReset()
