@@ -80,7 +80,7 @@ legendHtml(x) {
         <span class="nvjs-ll-value">${fc(x[1])}</span>
         <span style="color: ${color1}">S</span>
         <span class="nvjs-ll-value">${fc(x[2])}</span>
-        <span style="color: ${color1}">∑</span>
+        <span style="color: ${color1}">Σ</span>
         <span class="nvjs-ll-value">${fc(x[3])}</span>
         <span style="color: ${color1}">Δ</span>
         <span class="nvjs-ll-value">${sign}${fc(x[4])}</span>
