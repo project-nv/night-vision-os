@@ -116,9 +116,6 @@ async function loadDataset(name, code) {
 function saveChanges(item, src) {
     try {
         let data = JSON.parse(src) 
-        data.meta = {
-            dataGen: src
-        }
         db.save(item.name, data)
         self.chart.data = data 
         self.chart.fullReset()

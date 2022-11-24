@@ -11,9 +11,9 @@
 // Overlay props
 prop('barWidth', { type: 'number', def: 4 })
 prop('lineWidth', { type: 'number', def: 1 })
-prop('colorUp', { type: 'Color', def: '#79e0b3' })
+prop('colorUp', { type: 'Color', def: '#35a776' })
 prop('colorDw', { type: 'Color', def: '#e54150' })
-prop('colorSemiUp', { type: 'Color', def: '#35a776' })
+prop('colorSemiUp', { type: 'Color', def: '#79e0b3' })
 prop('colorSemiDw', { type: 'Color', def: '#ea969e' })
 prop('colorValue', { type: 'Color', def: '#3782f2' })
 prop('colorSignal', { type: 'Color', def: '#f48709' }) 

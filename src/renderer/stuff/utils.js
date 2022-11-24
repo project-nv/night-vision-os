@@ -4,7 +4,7 @@ import Const from './constants.js'
 
 const OV_REGEX = /\[OVERLAY[\s]+([\s\S]*?)\]/gm
 const PROP_SPLIT = /prop[\s]*?\([\s\S]*?\)/gm 
-const PROP_REGEX = /prop[\s\S]*?\(*?([_$a-zA-Z0-9-]+).*?\{(.*?)\}\)/gm
+const PROP_REGEX = /prop[\s\S]*?\(*?([_$a-zA-Z0-9-]+)[\s\S]*?\{([\s\S]*?)\}[\s\S]*\)/gm
 
 export default {
 
