@@ -1,7 +1,7 @@
 
 import IndexedArray from 'arrayslicer'
 import Const from './constants.js'
-
+import { Const as NvConst } from 'night-vision'
 const OV_REGEX = /\[OVERLAY[\s]+([\s\S]*?)\]/gm
 const PROP_SPLIT = /prop[\s]*?\([\s\S]*?\)/gm 
 const PROP_REGEX = /prop[\s\S]*?\(*?([_$a-zA-Z0-9-]+)[\s\S]*?\{([\s\S]*?)\}[\s\S]*\)/gm
@@ -356,6 +356,7 @@ export default {
         let env = `
             let $props = {}
             let $opt = {}
+            let $core = { colors: ${JSON.stringify(NvConst.COLORS)} }
             function prop(name, obj) {
                 $props[name] = obj.def
                 $opt[name] = obj
