@@ -1,9 +1,9 @@
 // Navy ~ 0.1-lite
 
-[OVERLAY name=NewOverlay, verion=0.1.0]
+[OVERLAY name=NewOverlay, ctx=Canvas, verion=0.1.0]
 
 // Overlay props
-prop('color', { type: 'Color', def: '#2d7b2f33' })
+prop('color', { type: 'color', def: '#2d7b2f33' })
 
 // Draw call
 draw(ctx) {
