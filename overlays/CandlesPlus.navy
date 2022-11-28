@@ -1,0 +1,134 @@
+
+// NavyJS ~ 0.1-lite
+
+// Colored Candles (Warning: coloring makes it slower)
+// Format: [<timestamp>, <open>, <high>, <low>, <close>, <?volume>, <?color>]
+// <?color> :: Candle body color 
+
+[OVERLAY name=CandlesPlus, ctx=Canvas, author=ChartMaster, version=1.0.0]
+
+// Define the props
+prop('colorBodyUp', { type: 'color', def: $core.colors.candleUp })
+prop('colorBodyDw', { type: 'color', def: $core.colors.candleDw })
+prop('colorWickUp', { type: 'color', def: $core.colors.wickUp })
+prop('colorWickDw', { type: 'color', def: $core.colors.wickDw })
+prop('colorVolUp', { type: 'color', def: $core.colors.volUp })
+prop('colorVolDw', { type: 'color', def: $core.colors.volDw })
+prop('showVolume', { type: 'boolean', def: true })
+prop('currencySymbol', { type: 'string', def: '$' })
+prop('showAvgVolume', { type: 'boolean', def: true })
+prop('avgVolumeSMA', { type: 'number', def: 20 })
+prop('colorAvgVol', { type: 'color', def: '#1cccb777'})
+prop('scaleSymbol', { type: 'string|boolean', def: false })
+prop('priceLine', { type: 'boolean', def: true })
+prop('showValueTracker', { type: 'boolean', def: true })
+prop('coloringBodies', { type: 'boolean', def: true })
+prop('coloringWicks', { type: 'boolean', def: false })
+prop('coloringVolume', { type: 'boolean', def: false })
+
+// Draw call
+draw(ctx) {
+
+    let cnv = $lib.layoutCnv($core, true, $props.showVolume)
+    let bodies = cnv.upBodies.length ? cnv.upBodies : cnv.dwBodies
+    if (!bodies.length) return
+    let w = Math.max(bodies[0].w, 1)
+    let cb = $props.coloringBodies
+    let cw = $props.coloringWicks
+    let cv = $props.coloringVolume
+
+    drawCvPart(ctx, $lib.candleWick, cnv.dwWicks, 1, 'colorWickDw', cw)
+    drawCvPart(ctx, $lib.candleWick, cnv.upWicks, 1, 'colorWickUp', cw)
+    drawCvPart(ctx, $lib.candleBody, cnv.dwBodies, w, 'colorBodyDw', cb)
+    drawCvPart(ctx, $lib.candleBody, cnv.upBodies, w, 'colorBodyUp', cb)
+    drawCvPart(ctx, $lib.volumeBar, cnv.dwVolbars, w, 'colorVolDw', cv)
+    drawCvPart(ctx, $lib.volumeBar, cnv.upVolbars, w, 'colorVolUp', cv)
+
+    if ($props.showVolume && $props.showAvgVolume) {
+        $lib.avgVolume(ctx, $core, $props, cnv)
+    }
+
+}
+
+// Draw candle part
+drawCvPart(ctx, f, arr, w, color, coloring = false) {
+    let layout = $core.layout
+    let prevColor = null
+    ctx.lineWidth = w
+    ctx.strokeStyle = $props[color]
+    ctx.beginPath()
+    for (var i = 0, n = arr.length; i < n; i++) {
+        if (coloring) {
+            var color = arr[i].src[6]
+            if (color) {
+                if (color !== prevColor) {
+                    ctx.stroke()
+                    ctx.beginPath()
+                }
+                ctx.strokeStyle = color
+            } 
+            prevColor = color
+        }
+        f(ctx, arr[i], layout)
+    }
+    ctx.stroke()
+}
+
+// Define y-range (by finding max High, min Low)
+yRange() {
+    // Getting updated data faster
+    // (we need 1 more update when using $core.dataSubset)
+    let data = $core.hub.ovDataSubset($core.paneId, $core.id)
+    let len = data.length
+    var h, l, high = -Infinity, low = Infinity
+    for(var i = 0; i < len; i++) {
+        let point = data[i]
+        if (point[2] > high) high = point[2]
+        if (point[3] < low) low = point[3]
+    }
+    return [high, low]
+}
+
+// Use [Open, Close] for precision detection
+preSampler(x) => [x[1], x[4]]
+
+// Map data item to OHLC (for candle magnets etc.) 
+ohlc(x) => [x[1], x[2], x[3], x[4]]
+
+// Price label + Scale symbol + price line
+valueTracker(x) => {
+    show: $props.showValueTracker,
+    symbol: $props.scaleSymbol,
+    line: $props.priceLine,
+    color: $lib.candleColor($props, $core.data[$core.data.length - 1]),
+    value: x[4] // close
+}
+
+// Define the OHLCV legend
+legendHtml(x, prec, f) {
+    let color1 = $core.colors.text
+    let v = $core.cursor.getValue($core.paneId, $core.id)
+    let sym = $props.currencySymbol
+    let color2 = v[4] >= v[1] ?
+        $props.colorBodyUp : $props.colorBodyDw
+    if ($props.coloringBodies && x[6]) {
+        color2 = x[6]
+    }
+    let fc = $lib.formatCash
+    return `
+    <span style="color: ${color2}">
+        <span style="margin-left: 3px;"></span>
+        <span style="color: ${color1}">O</span>
+        <span class="nvjs-ll-value">${f(x[1])}</span>
+        <span style="color: ${color1}">H</span>
+        <span class="nvjs-ll-value">${f(x[2])}</span>
+        <span style="color: ${color1}">L</span>
+        <span class="nvjs-ll-value">${f(x[3])}</span>
+        <span style="color: ${color1}">C</span>
+        <span class="nvjs-ll-value">${f(x[4])}</span>
+    `
+    + ($props.showVolume ? `
+        <span style="color: ${color1}">V</span>
+        <span class="nvjs-ll-value">${sym+fc(x[5])}</span>` : ``)
+    + `</span>`
+    }
