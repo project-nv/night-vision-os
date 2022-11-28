@@ -15,6 +15,7 @@ prop('colorWickDw', { type: 'color', def: $core.colors.wickDw })
 prop('colorVolUp', { type: 'color', def: $core.colors.volUp })
 prop('colorVolDw', { type: 'color', def: $core.colors.volDw })
 prop('showVolume', { type: 'boolean', def: true })
+prop('showWicks', { type: 'boolean', def: true })
 prop('currencySymbol', { type: 'string', def: '$' })
 prop('showAvgVolume', { type: 'boolean', def: true })
 prop('avgVolumeSMA', { type: 'number', def: 20 })
@@ -33,12 +34,15 @@ draw(ctx) {
     let bodies = cnv.upBodies.length ? cnv.upBodies : cnv.dwBodies
     if (!bodies.length) return
     let w = Math.max(bodies[0].w, 1)
+    let sw = $props.showWicks
     let cb = $props.coloringBodies
     let cw = $props.coloringWicks
     let cv = $props.coloringVolume
 
-    drawCvPart(ctx, $lib.candleWick, cnv.dwWicks, 1, 'colorWickDw', cw)
-    drawCvPart(ctx, $lib.candleWick, cnv.upWicks, 1, 'colorWickUp', cw)
+    if (sw) {
+        drawCvPart(ctx, $lib.candleWick, cnv.dwWicks, 1, 'colorWickDw', cw)
+        drawCvPart(ctx, $lib.candleWick, cnv.upWicks, 1, 'colorWickUp', cw)
+    }
     drawCvPart(ctx, $lib.candleBody, cnv.dwBodies, w, 'colorBodyDw', cb)
     drawCvPart(ctx, $lib.candleBody, cnv.upBodies, w, 'colorBodyUp', cb)
     drawCvPart(ctx, $lib.volumeBar, cnv.dwVolbars, w, 'colorVolDw', cv)
@@ -59,15 +63,20 @@ drawCvPart(ctx, f, arr, w, color, coloring = false) {
     ctx.beginPath()
     for (var i = 0, n = arr.length; i < n; i++) {
         if (coloring) {
-            var color = arr[i].src[6]
-            if (color) {
-                if (color !== prevColor) {
+            var c = arr[i].src[6]
+            if (c) {
+                if (c !== prevColor) {
                     ctx.stroke()
                     ctx.beginPath()
                 }
-                ctx.strokeStyle = color
-            } 
-            prevColor = color
+                ctx.strokeStyle = c
+            } else if (prevColor !== $props[color]) {
+                ctx.stroke()
+                ctx.beginPath()
+                ctx.strokeStyle = $props[color]
+                prevColor = $props[color]
+            }
+            prevColor = c
         }
         f(ctx, arr[i], layout)
     }
