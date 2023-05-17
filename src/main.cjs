@@ -53,10 +53,11 @@ function createWindow() {
 
 
 function waitForUrl() {
-    axios.get('http://localhost:16888/index.html')
+    axios.get('http://127.0.0.1:16888/index.html')
         .then(res => { if (!win) createWindow() })
         .catch(wrr => setTimeout(waitForUrl, 100))
 }
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
