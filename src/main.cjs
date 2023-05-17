@@ -26,6 +26,7 @@ function createWindow() {
            enableRemoteModule: true,
            //webviewTag: false,
            sandbox: false,
+            additionalArguments: [`DATA_ROOT=${process.env.DATA_ROOT}`]
            //preload: path.join(__dirname, 'bridge_lite.js'),
        },
        backgroundColor: '#111'

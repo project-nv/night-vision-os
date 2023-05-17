@@ -32,7 +32,7 @@ let ovdb = null
 
 onMount(() => {
     // Set custom overlays
-    ovdb = new FileDb('./overlays/', 'navy')
+    ovdb = new FileDb(DATA_ROOT + '/overlays/', 'navy')
     let data = ovdb.loadAll()
     self.chart.scripts = Object.values(data)
 })

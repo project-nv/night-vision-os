@@ -11,8 +11,8 @@ const dispatch = createEventDispatcher()
 let toConfirm = null
 let listRef = null
 
-let db = new FileDb('./datasets/', 'json')
-let templDb = new FileDb('./templates/')
+let db = new FileDb(DATA_ROOT + '/datasets/', 'json')
+let templDb = new FileDb(DATA_ROOT + '/templates/')
 let dsTemplate = templDb.load('newDataset.txt')
 let items = db.list().map(x => ({ name: x }))
 items.push({

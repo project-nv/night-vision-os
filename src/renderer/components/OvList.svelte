@@ -10,8 +10,8 @@ const dispatch = createEventDispatcher()
 let toConfirm = null
 let listRef = null
 
-let db = new FileDb('./overlays/', 'navy')
-let templDb = new FileDb('./templates/')
+let db = new FileDb(DATA_ROOT + '/overlays/', 'navy')
+let templDb = new FileDb(DATA_ROOT + '/templates/')
 let ovTemplate = templDb.load('newOverlay.txt')
 
 let data = db.loadAll()
